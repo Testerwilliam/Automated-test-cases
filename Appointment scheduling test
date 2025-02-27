@@ -1,0 +1,57 @@
+describe("prueba agendamiento",() => {
+
+    it ("validar agendamiento desde superadministrador ", () => {
+    //login to web "ERP"
+    cy.visit("https://app.clez.co/") 
+    cy.get("#LoginForm_username").type("PILATESPXXX")
+    cy.get("#LoginForm_password").type("XXXXXXXXXX")
+    cy.get(".boton").click()
+    cy.get("#LoginForm_sucursal").select(1)
+    cy.get(".boton").click()
+    //Enter "agendamiento" Module.
+    cy.get(":nth-child(8) > .nav-toggle").click()
+    cy.get('.nav-item.open > .sub-menu > :nth-child(1) > .nav-link').click()
+    cy.get('.nav > :nth-child(2) > a').click()
+    cy.get('#id_sucursal').select(3)
+    cy.get('#id_tercero').select(1)
+    cy.get('#calendarAgenda').should("be.visible")
+    cy.get('#id_disciplina').select(16)
+    cy.get('#fecha_inicio').type("2024-11-30");
+    cy.get('#fecha_fin').type("2024-12-01")
+    cy.get('#hora_inicio').type("05:00")
+    cy.get('#hora_fin').type("07:00")
+    //cy.get('#sabado').click()
+    //cy.get('#domingo').click()
+    cy.get('#intervalos').type("1")
+    cy.get('#max_cupo').type("5")
+    cy.get('#cantidad_lista_espera').type(2)
+    cy.get('#btn-agregar').click()
+    cy.get('.fc-day-sat > .fc-daygrid-day-frame > .fc-daygrid-day-events > :nth-child(1) > .fc-event > .fc-event-title').invoke('text').should('match', /Preview.*agend/);
+    //verify that it is previewed
+    cy.get('#btn-guardarMasivo').click()
+
+    //Go to "agendar personas" 
+    cy.get('.nav > :nth-child(5) > a').click()
+    cy.get('#select2-selectPersona-container').click()
+    cy.get('.select2-search__field').type("1109493XX")
+    cy.wait(3000)
+    cy.get('.select2-results__option').click()
+    cy.get('#selectSucursal').select(3)
+    cy.get('#selectPlanAgenda').select(2)
+    cy.get('#datePicker').type("2024-11-30")
+    cy.wait(3000)
+    //cy.get(':nth-child(1) > .card-header').should("be.exist")
+    cy.get('.nav > :nth-child(2) > a').click()
+    cy.get('.col-md-8 > :nth-child(1) > a').click()
+    cy.get('#id_sucursal_eliminar').select(3)
+    cy.wait(2000)
+    cy.get('#id_tercero_eliminar').select(1)
+    cy.get('#fecha_inicio_eliminar').type("2024-11-30")
+    cy.get('#fecha_fin_eliminar').type("2024-12-02")
+    cy.get('#sabado_eliminar').click()
+    cy.get('#domingo_eliminar').click()
+    cy.get('#btn-eliminarMasivo').click()
+
+})
+
+})
